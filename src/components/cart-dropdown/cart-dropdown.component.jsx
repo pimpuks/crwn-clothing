@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import CustomButton from '../custom-button/custom-button.component';
 import CartItem from '../cart-item/cart-item.component';
+import { selectCartItems } from '../../redux/cart/cart.selectors';
 import './cart-dropdown.styles.scss';
 
 const CartDropdown = ({ cartItems }) => (
@@ -14,8 +15,14 @@ const CartDropdown = ({ cartItems }) => (
     <CustomButton>GO TO CHECKOUT</CustomButton>
   </div>
 );
+// Without using selector
+// const mapStateToProps = ({ cart: { cartItems } }) => ({
+//   cartItems
+// });
 
-const mapStateToProps = ({ cart: { cartItems } }) => ({
-  cartItems
+// Using selector, so that the cart dropdown will not get re-rendered every time
+// that any state changes, but only when cart items are changed.
+const mapStateToProps = state => ({
+  cartItems: selectCartItems(state)
 });
 export default connect(mapStateToProps)(CartDropdown);
